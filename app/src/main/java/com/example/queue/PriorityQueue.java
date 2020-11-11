@@ -1,12 +1,12 @@
 package com.example.queue;
 
-public class Queue {
+public class PriorityQueue {
 
     private int size;
     private Node front;
     private Node rear;
 
-    public Queue() {
+    public PriorityQueue() {
         this.size=0;
     }
     public int getSize() {
@@ -26,13 +26,19 @@ public class Queue {
             System.out.println("StackOverFlow");
             this.size--;
         }
+
         if(this.size==1) {
             this.front=node;
             this.rear=node;
         }
         else {
-            this.rear.setNext(node);
-            this.rear=node;
+            if(node.getVal()<this.front.getVal()){
+                node.setNext(this.front);
+                this.front=node;
+            }else{
+                this.rear.setNext(node);
+                this.rear=node;
+            }
         }
     }
 
@@ -42,8 +48,19 @@ public class Queue {
             return null;
         }
         this.size--;
-        Node n = this.front;
+        Node res = this.front;
         this.front=this.front.getNext();
-        return n;
+
+        Node n=this.front;
+        while(n!=null){
+            if (front.getVal()>n.getVal()){
+                int cur=this.front.getVal();
+                this.front.setVal(n.getVal());
+                n.setVal(cur);
+            }
+            n=n.getNext();
+        }
+
+        return res;
     }
 }
